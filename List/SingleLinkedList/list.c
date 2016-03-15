@@ -20,11 +20,11 @@ void list_init(List *list, void (*destroy)(void *data))
 
 void list_destroy(List *list)
 {
-    void *date = NULL;
+    void *data = NULL;
     /* Remove each element */
     while (list_size(list) > 0)
     {
-        if ((list_rm_next(list, NULL, (void **)&date) == 0) && (NULL != list->destroy))
+        if ((list_rm_next(list, NULL, (void **)&data) == 0) && (NULL != list->destroy))
         {
             list->destroy(data);
         }
