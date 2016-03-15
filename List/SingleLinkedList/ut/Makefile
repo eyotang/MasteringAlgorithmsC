@@ -1,4 +1,4 @@
-TARGET = test_list
+TARGET = test_job
 all:$(TARGET)
 
 CXX = g++
