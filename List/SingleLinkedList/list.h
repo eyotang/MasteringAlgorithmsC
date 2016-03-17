@@ -27,7 +27,7 @@ typedef struct List_
 /* Public interfaces */
 void list_init(List *list, void (*destroy)(void *data), int (*compare)(const void *key1, const void *key2));
 void list_destroy(List *list);
-int list_find_prev(List *list, ListElmt **element, const void *data);
+int list_find_elmt(List *list, ListElmt **element, const void *data);
 int list_ins_next(List *list, ListElmt *element, const void *data);
 int list_rm_next(List *list, ListElmt *element, void **data);
 

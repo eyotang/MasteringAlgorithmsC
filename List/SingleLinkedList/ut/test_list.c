@@ -134,7 +134,7 @@ TEST(Test_list_destroy, NotNull) {
     ASSERT_EQ(true, list_is_empty(&list));
 }
 
-TEST(Test_list_find_prev, FailedSizeZero) {
+TEST(Test_list_find_elmt, FailedSizeZero) {
     List list;
     Student *student = (Student *)malloc(sizeof(Student));
     strcpy(student->name, "eyotang");
@@ -142,15 +142,16 @@ TEST(Test_list_find_prev, FailedSizeZero) {
     list_init(&list, destroy, NULL);
 
     ListElmt *element = NULL;
-    int ret = list_find_prev(&list, &element, student);
+    int ret = list_find_elmt(&list, &element, student);
     ASSERT_EQ(-1, ret);
     ASSERT_EQ(NULL, element);
 
+    destroy(student);
     list_destroy(&list);
     ASSERT_EQ(true, list_is_empty(&list));
 }
 
-TEST(Test_list_find_prev, CompareNULL) {
+TEST(Test_list_find_elmt, CompareNULL) {
     List list;
     Student *student = (Student *)malloc(sizeof(Student));
     strcpy(student->name, "eyotang");
@@ -159,7 +160,7 @@ TEST(Test_list_find_prev, CompareNULL) {
     list_ins_next(&list, NULL, student);
 
     ListElmt *element = NULL;
-    int ret = list_find_prev(&list, &element, student);
+    int ret = list_find_elmt(&list, &element, student);
     ASSERT_EQ(-1, ret);
     ASSERT_EQ(NULL, element);
 
@@ -174,7 +175,7 @@ static int compare(const void *key1, const void *key2)
     return strcmp(student1->name, student2->name);
 }
 
-TEST(Test_list_find_prev, SuccessWithNULL) {
+TEST(Test_list_find_elmt, FailedWithoutResult) {
     List list;
     Student *student = (Student *)malloc(sizeof(Student));
     strcpy(student->name, "eyotang");
@@ -182,16 +183,21 @@ TEST(Test_list_find_prev, SuccessWithNULL) {
     list_init(&list, destroy, compare);
     list_ins_next(&list, NULL, student);
 
+    Student *student2 = (Student *)malloc(sizeof(Student));
+    strcpy(student2->name, "eabcdef");
+    student2->age = 15;
+
     ListElmt *element = NULL;
-    int ret = list_find_prev(&list, &element, student);
-    ASSERT_EQ(0, ret);
+    int ret = list_find_elmt(&list, &element, student2);
+    ASSERT_EQ(-1, ret);
     ASSERT_EQ(NULL, element);
 
+    destroy(student2);
     list_destroy(&list);
     ASSERT_EQ(true, list_is_empty(&list));
 }
 
-TEST(Test_list_find_prev, SuccessWithResult) {
+TEST(Test_list_find_elmt, SuccessWithResult) {
     List list;
     list_init(&list, destroy, compare);
 
@@ -206,11 +212,11 @@ TEST(Test_list_find_prev, SuccessWithResult) {
     list_ins_next(&list, list_tail(&list), student2);
 
     ListElmt *element = NULL;
-    int ret = list_find_prev(&list, &element, student2);
+    int ret = list_find_elmt(&list, &element, student2);
     ASSERT_EQ(0, ret);
     ASSERT_NE((ListElmt *)NULL, element);
-    ASSERT_EQ(student1, element->data);
-    ASSERT_EQ(0, compare(student2, list_next(element)->data));
+    ASSERT_EQ(student2, element->data);
+    ASSERT_EQ(0, compare(student2, element->data));
 
     list_destroy(&list);
     ASSERT_EQ(true, list_is_empty(&list));
