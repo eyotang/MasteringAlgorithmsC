@@ -6,7 +6,7 @@
 #include "list.h"
 
 
-void list_init(List *list, void (*destroy)(void *data))
+void list_init(List *list, void (*destroy)(void *data), int (*compare)(const void *key1, const void *key2))
 {
     /* Initialize the list */
     list->size = 0;
@@ -14,6 +14,7 @@ void list_init(List *list, void (*destroy)(void *data))
     list->tail = NULL;
 
     list->destroy = destroy;
+    list->compare = compare;
 
     return;
 }
@@ -106,5 +107,36 @@ int list_rm_next(List *list, ListElmt *element, void **data)
     free(old_element);
     list->size--;
 
+    return 0;
+}
+
+int list_find_prev(List *list, ListElmt **element, const void *data)
+{
+    if ((0 == list_size(list)) || (NULL == list->compare))
+    {
+        return -1;
+    }
+
+    ListElmt *prev = NULL;
+    ListElmt *current = list_head(list);
+    while (NULL != current)
+    {
+        if (0 == list->compare(current->data, data))
+        {
+            break;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    /**
+     * Didn't find the element with specific data
+     */
+    if (list_is_tail(list, prev))
+    {
+        return -1;
+    }
+
+    *element = prev;
     return 0;
 }

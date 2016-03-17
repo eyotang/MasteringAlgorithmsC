@@ -16,7 +16,7 @@ typedef struct ListElmt_
 /* Define a structrue for linked lists. */
 typedef struct List_
 {
-    int  (*match)(const void *key1, const void *key2);
+    int  (*compare)(const void *key1, const void *key2);
     void (*destroy)(void *data);
 
     int size;
@@ -25,8 +25,9 @@ typedef struct List_
 } List;
 
 /* Public interfaces */
-void list_init(List *list, void (*destroy)(void *data));
+void list_init(List *list, void (*destroy)(void *data), int (*compare)(const void *key1, const void *key2));
 void list_destroy(List *list);
+int list_find_prev(List *list, ListElmt **element, const void *data);
 int list_ins_next(List *list, ListElmt *element, const void *data);
 int list_rm_next(List *list, ListElmt *element, void **data);
 
