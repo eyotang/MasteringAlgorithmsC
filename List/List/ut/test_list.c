@@ -7,7 +7,7 @@
 
 TEST(Test_list_size, eqZero) {
     List list;
-    list_init(&list, NULL, NULL);
+    list_init(&list, NULL);
     ASSERT_EQ(0, list_size(&list));
 }
 
@@ -217,6 +217,29 @@ TEST(Test_list_find_elmt, SuccessWithResult) {
     ASSERT_NE((ListElmt *)NULL, element);
     ASSERT_EQ(student2, element->data);
     ASSERT_EQ(0, compare(student2, element->data));
+
+    list_destroy(&list);
+    ASSERT_EQ(true, list_is_empty(&list));
+}
+
+TEST(Test_list_find_elmt, FailedWithoutCompare) {
+    List list;
+    list_init(&list, destroy);
+
+    Student *student1 = (Student *)malloc(sizeof(Student));
+    strcpy(student1->name, "eyotang");
+    student1->age = 15;
+    list_ins_next(&list, list_tail(&list), student1);
+
+    Student *student2 = (Student *)malloc(sizeof(Student));
+    strcpy(student2->name, "eabcdef");
+    student2->age = 15;
+    list_ins_next(&list, list_tail(&list), student2);
+
+    ListElmt *element = NULL;
+    int ret = list_find_elmt(&list, &element, student2);
+    ASSERT_EQ(-1, ret);
+    ASSERT_EQ((ListElmt *)NULL, element);
 
     list_destroy(&list);
     ASSERT_EQ(true, list_is_empty(&list));
