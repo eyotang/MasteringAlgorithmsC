@@ -5,8 +5,35 @@
 
 #include "list.h"
 
+void list_init_arg(List *list, int count, ...)
+{
+    va_list v;
+    va_start(v, count);
 
-void list_init(List *list, void (*destroy)(void *data), int (*compare)(const void *key1, const void *key2))
+    void *destroy = NULL;
+    void *compare = NULL;
+
+    for (int i = 0; i < count; ++i)
+    {
+        switch (i)
+        {
+            case 0:
+                destroy = va_arg(v, void *);
+                break;
+            case 1:
+                compare = va_arg(v, void *);
+                break;
+            default:
+                break;
+        }
+    }
+    va_end(v);
+
+    list_init_impl(list, (void (*)(void*))destroy, (int (*)(const void*, const void*))compare);
+
+}
+
+void list_init_impl(List *list, void (*destroy)(void *data), int (*compare)(const void *key1, const void *key2))
 {
     /* Initialize the list */
     list->size = 0;
