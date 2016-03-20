@@ -49,6 +49,7 @@ void list_init_impl(List *list, void (*destroy)(void *data), int (*compare)(cons
 void list_destroy(List *list)
 {
     void *data = NULL;
+
     /* Remove each element */
     while (list_size(list) > 0)
     {
@@ -155,8 +156,6 @@ int list_find_elmt(List *list, ListElmt **element, const void *data)
         current = current->next;
     }
 
-    /**
-     * Didn't find the element with specific data
-     */
+    /* Didn't find the element with specific data. */
     return -1;
 }
