@@ -66,6 +66,8 @@ void list_destroy(List *list)
 int list_ins_next(List *list, ListElmt *element, const void *data)
 {
     ListElmt *new_element = NULL;
+
+    /* Allocate the storage for the element. */
     new_element = (ListElmt *)malloc(sizeof(ListElmt));
     if (NULL == new_element)
     {
@@ -73,8 +75,10 @@ int list_ins_next(List *list, ListElmt *element, const void *data)
     }
     new_element->data = (void*)data;
 
+    /* Insert the element into the list. */
     if (NULL == element)
     {
+        /* Handle the insertion at the head of the list. */
         if (0 == list_size(list))
         {
             list->tail = new_element;
@@ -84,6 +88,7 @@ int list_ins_next(List *list, ListElmt *element, const void *data)
     }
     else
     {
+        /* Handle the insertion somewhere other than at the head. */
         if (NULL == element->next)
         {
             list->tail = new_element;
@@ -99,13 +104,17 @@ int list_ins_next(List *list, ListElmt *element, const void *data)
 int list_rm_next(List *list, ListElmt *element, void **data)
 {
     ListElmt *old_element = NULL;
+
+    /* Don't allow removal from an empty list. */
     if (0 == list_size(list))
     {
         return -1;
     }
 
+    /* Remove the element from the list. */
     if (NULL == element)
     {
+        /* Handle the removal from the head of the list. */
         *data = list->head->data;
         old_element = list->head;
         list->head = list->head->next;
@@ -117,6 +126,7 @@ int list_rm_next(List *list, ListElmt *element, void **data)
     }
     else
     {
+        /* Handle removal from somewhere other than the head. */
         if (NULL == element->next)
         {
             return -1;
@@ -132,6 +142,7 @@ int list_rm_next(List *list, ListElmt *element, void **data)
         }
     }
 
+    /* Free the storage alloocated for the element. */
     free(old_element);
     list->size--;
 
