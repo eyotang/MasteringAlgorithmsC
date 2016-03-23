@@ -54,4 +54,4 @@ void dlist_init_arg(DList *list, int count, ...);
     dlist_init_arg(list, COUNT_PARMS(__VA_ARGS__), __VA_ARGS__)
 
 
-#endif // DLIST_H
+#endif /* DLIST_H */

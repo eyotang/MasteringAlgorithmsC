@@ -49,4 +49,4 @@ void list_init_arg(List *list, int count, ...);
 #define list_init(list, ...)                                         \
     list_init_arg(list, COUNT_PARMS(__VA_ARGS__), __VA_ARGS__)
 
-#endif // LIST_H
+#endif /* LIST_H */
