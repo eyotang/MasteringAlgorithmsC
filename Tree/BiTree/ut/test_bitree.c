@@ -49,25 +49,26 @@ TEST(Test_bitree_build_tree, Success) {
     }
     cout << endl;
 
-
+    int current = 0;
+    int last = 1;
     vector <BiTreeNode *> vec;
     vec.push_back(tree.root);
-    int cur = 0;
-    int last = 1;
 
-    while(cur < vec.size()) {
-
+    while(current < vec.size())
+    {
         last = vec.size();
         /* layer start */
-        while(cur < last) {
-            cout << *((int*)vec[cur]->data) << " ";
-            if (vec[cur]->left != NULL) {
-                vec.push_back(vec[cur]->left);
+        while(current < last)
+        {
+            node = vec[current];
+            cout << *((int*)node->data) << " ";
+            if (node->left != NULL) {
+                vec.push_back(node->left);
             }
-            if (vec[cur]->right != NULL) {
-                vec.push_back(vec[cur]->right);
+            if (node->right != NULL) {
+                vec.push_back(node->right);
             }
-            cur++;
+            current++;
         }
         cout << endl;
     }
