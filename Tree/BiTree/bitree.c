@@ -188,3 +188,8 @@ void bitree_rem_right(BiTree *tree, BiTreeNode *node)
 
     return;
 }
+
+int bitree_merge(BiTree *merge, BiTree *left, BiTree *right, const void *data)
+{
+    return 0;
+}
