@@ -13,7 +13,7 @@ void bitree_init(BiTree *tree, void (*destroy)(void *data))
     tree->destroy = destroy;
 }
 
-void bitree_destory(BiTree *tree)
+void bitree_destroy(BiTree *tree)
 {
     /* Remove all the node from the tree. */
     bitree_rem_left(tree, NULL);
@@ -191,5 +191,29 @@ void bitree_rem_right(BiTree *tree, BiTreeNode *node)
 
 int bitree_merge(BiTree *merge, BiTree *left, BiTree *right, const void *data)
 {
+    /* Initialize the merged tree. */
+    bitree_init(merge, left->destroy);
+
+
+    /* Insert the data for the root node of the merged tree. */
+    if (bitree_ins_left(merge, NULL, data) != 0)
+    {
+        bitree_destroy(merge);
+        return -1;
+    }
+
+    /* Merge the two binary trees into a single binary tree. */
+    bitree_root(merge)->left = bitree_root(left);
+    bitree_root(merge)->right = bitree_root(right);
+
+    /* Adjust the size of the new binary tree. */
+    merge->size = merge->size + bitree_size(left) + bitree_size(right);
+
+    /* Do not let the original trees access the merged nodes. */
+    left->root = NULL;
+    left->size = 0;
+    right->root = NULL;
+    right->size = 0;
+
     return 0;
 }
