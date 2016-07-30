@@ -107,4 +107,84 @@ int bitree_ins_right(BiTree *tree, BiTreeNode *node, const void *data)
 
 void bitree_rem_left(BiTree *tree, BiTreeNode *node)
 {
+    BiTreeNode **position;
+
+    /* Do not allow removal from an empty tree. */
+    if (bitree_is_empty(tree))
+    {
+        return;
+    }
+
+    /* Determine where to remove nodes. */
+    if (node == NULL)
+    {
+        position = &tree->root;
+    }
+    else
+    {
+        position = &node->left;
+    }
+
+    /* Remove the nodes. */
+    if (*position != NULL)
+    {
+        bitree_rem_left(tree, *position);
+        bitree_rem_right(tree, *position);
+
+        if (tree->destroy != NULL)
+        {
+            /* Call a user-defined function to free dynamically allocated data. */
+            tree->destroy((*position)->data);
+        }
+
+        free(*position);
+        *position = NULL;
+
+        /* Adjust the size of the tree to account for the removed node. */
+        tree->size--;
+    }
+
+    return;
+}
+
+void bitree_rem_right(BiTree *tree, BiTreeNode *node)
+{
+    BiTreeNode **position;
+
+    /* Do not allow removal from an empty tree. */
+    if (bitree_is_empty(tree))
+    {
+        return;
+    }
+
+    /* Determine where to remove the nodes. */
+    if (node == NULL)
+    {
+        position = &tree->root;
+    }
+    else
+    {
+        position = &node->right;
+    }
+
+    /* Remove the nodes. */
+    if (*position != NULL)
+    {
+        bitree_rem_left(tree, *position);
+        bitree_rem_right(tree, *position);
+
+        if (tree->destroy != NULL)
+        {
+            /* Call a user-defined function to free dynamically allocated data. */
+            tree->destroy((*position)->data);
+        }
+
+        free(*position);
+        *position = NULL;
+
+        /* Adjust the size of the tree to account for the removed node. */
+        tree->size--;
+    }
+
+    return;
 }
