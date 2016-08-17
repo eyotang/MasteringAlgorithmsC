@@ -1,2 +1,6 @@
 *.o
 test_job
+GPATH
+GRTAGS
+GSYMS
+GTAGS
