@@ -49,8 +49,8 @@ TEST(Test_bitree_build_tree, Success) {
     }
     cout << endl;
 
-    int current = 0;
-    int last = 1;
+    unsigned int current = 0;
+    unsigned int last = 1;
     vector <BiTreeNode *> vec;
     vec.push_back(tree.root);
 
